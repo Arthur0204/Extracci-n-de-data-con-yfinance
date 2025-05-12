@@ -1,6 +1,5 @@
 #ETL_general
 import yfinance as yf
-import pandas as pd
 
 def ETL(Ticker,start,end):
 

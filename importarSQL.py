@@ -1,10 +1,16 @@
 #importar a SQL
 from sqlalchemy import create_engine #librería encargada de crear el engine
+import json
 import os
 
-def subirSQL(df,nombre,tipo):
-    server = "LAPTOP-Arturo" #especificar el nombre del servidor con el que te vas a conectar
-    database = "Trading" #el nombre de la base de datos con la que vas a trabajar
+def cargar_config(): #extrar los parámetros desde el archivo json "config"
+    with open("config.json", "r") as f:
+        return json.load(f)
+
+def subirSQL(df,nombre,tipo): #función principal (para extraer los parámetros)
+    config = cargar_config() #esto carga la configuración de conexión del servidor
+    server = config.get("server", "null")
+    database = config.get("database", "null")
     conn_str = f"mssql+pyodbc://@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server" 
     engine = create_engine(conn_str)
 
