@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine #librería encargada de crear el engine
 import os
 
-def subirSQL(df,nombre):
+def subirSQL(df,nombre,tipo):
     server = "LAPTOP-Arturo" #especificar el nombre del servidor con el que te vas a conectar
     database = "Trading" #el nombre de la base de datos con la que vas a trabajar
     conn_str = f"mssql+pyodbc://@{server}/{database}?driver=ODBC+Driver+17+for+SQL+Server" 
@@ -19,7 +19,7 @@ def subirSQL(df,nombre):
         if respuesta == '1':
             try:
                 print(f"📤 Subiendo la tabla a SQL...")
-                df.to_sql(nombre, engine, if_exists='replace', index=True)
+                df.to_sql(nombre, engine, schema = tipo, if_exists='replace', index=True)
                 print(f"✅ Los datos de {nombre} fueron subidos exitosamente a la base de datos '{database}'.")
                 break
             except Exception as e:
