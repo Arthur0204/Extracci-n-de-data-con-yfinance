@@ -1,0 +1,10 @@
+{
+  "EQUITY": "Acciones",
+  "ETF": "ETFs",
+  "MUTUALFUND": "Fondo_mutuo",
+  "INDEX": "Índice",
+  "CURRENCY": "Divisa",
+  "CRYPTOCURRENCY": "Criptomoneda",
+  "FUTURE": "Futuro",
+  "OPTION": "Opción"
+}
