@@ -3,7 +3,7 @@ import json
 import pyodbc
 import sys
 
-CONFIG_PATH = "config.json"
+CONFIG_PATH = "config.json" #nombre del archivo .json en donde se guardan los parámetros
 
 def load_config(): #función para abrir el archivo "config.json", son se guardan las configuraciones
     if not os.path.exists(CONFIG_PATH):
@@ -30,7 +30,7 @@ def test_connection(server, database): #prueba de conexión con la base de datos
         return False
 
 
-def ask_for_server():
+def ask_for_server(): #al ingresar los datos, verifica si el servidor ingresado es válido
     while True:
         server = input("🔧 Ingresa el nombre del servidor SQL: ").strip()
         if test_connection(server, "master"):
@@ -38,7 +38,7 @@ def ask_for_server():
         print("❌ Servidor inválido. Intenta nuevamente.")
 
 
-def ask_for_database(server):
+def ask_for_database(server): #verifica si la base de datos previamente colocada existe dentro del servidor elegido
     while True:
         database = input("📂 Ingresa el nombre de la base de datos: ").strip()
         if test_connection(server, database):
@@ -46,17 +46,16 @@ def ask_for_database(server):
         print("❌ Base de datos inválida. Intenta nuevamente.")
 
 
-def ask_for_csv_path():
+def ask_for_csv_path(): #verifica si existe una ruta válida para los archivos que se exportan
     while True:
         path = input("📁 Ingresa la ruta donde guardarás los archivos .csv: ").strip()
-        # Corrige slashes si es necesario
         path = os.path.normpath(path)
         if os.path.isdir(path):
             return path
         print("❌ Ruta inválida o no existente. Intenta nuevamente.")
 
 
-def config_menu(salir):
+def config_menu(salir): #función principal con el menú de configuración
     config = load_config()
     # Verifica si hay conexión previa
     if config["server"] != "null" and config["database"] != "null":
