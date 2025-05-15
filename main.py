@@ -44,7 +44,7 @@ while True:
             from Ticker import ejecutar_etl #llama al modulo "ETL"
             ejecutar_etl(salir)          #extráe el objeto "salir"
             time.sleep(2)
-
+            
         except ModuleNotFoundError:
             print(f"❌ No se encontró el módulo.")
         except AttributeError:

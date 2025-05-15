@@ -1,11 +1,31 @@
 #importar a SQL
 from sqlalchemy import create_engine #librería encargada de crear el engine
-import json
+from sqlalchemy import text  # ejecutar comandos SQL directamente
+from sqlalchemy.types import DateTime, Float, BigInteger
+import json #lectura de archivos .json
 import os
+
+
+def asegurar_schema(engine, tipo):
+    # Usamos begin() para asegurarnos que los cambios se confirmen (commit) automáticamente
+    with engine.begin() as connection:
+        result = connection.execute(
+            text("SELECT schema_name FROM information_schema.schemata WHERE schema_name = :schema"),
+            {'schema': tipo}
+        )
+        if result.fetchone() is None:
+            print(f"ℹ️ El esquema '{tipo}' no existe en la base de datos, creando...")
+            connection.execute(text(f"CREATE SCHEMA {tipo}"))
+            print(f"✅ Esquema '{tipo}' creado exitosamente.")
+        else:
+            print("")  # Esquema ya existe, no se hace nada
+
 
 def cargar_config(): #extrar los parámetros desde el archivo json "config"
     with open("config.json", "r") as f:
         return json.load(f)
+
+
 
 def subirSQL(df,nombre,tipo): #función principal (para extraer los parámetros)
     config = cargar_config() #esto carga la configuración de conexión del servidor
@@ -24,8 +44,23 @@ def subirSQL(df,nombre,tipo): #función principal (para extraer los parámetros)
 
         if respuesta == '1':
             try:
+                asegurar_schema(engine, tipo)  # nuevo paso antes de subir
                 print(f"📤 Subiendo la tabla a SQL...")
-                df.to_sql(nombre, engine, schema = tipo, if_exists='replace', index=True)
+                
+                df.to_sql(nombre,engine,schema=tipo,if_exists='replace',index=True,
+                    dtype={
+                        "Date": DateTime(),
+                        "Open": Float(),
+                        "High": Float(),
+                        "Low": Float(),
+                        "Close": Float(),
+                        "Adj Close": Float(),
+                        "Volume": BigInteger(),
+                        "Dividends": Float(),
+                        "Stock Splits": Float()
+                    }
+                )
+                
                 print(f"✅ Los datos de {nombre} fueron subidos exitosamente a la base de datos '{database}'.")
                 break
             except Exception as e:
