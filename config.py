@@ -32,50 +32,50 @@ def test_connection(server, database): #prueba de conexión con la base de datos
 
 def ask_for_server(): #al ingresar los datos, verifica si el servidor ingresado es válido
     while True:
-        server = input("🔧 Ingresa el nombre del servidor SQL: ").strip()
+        server = input("Ingresa el nombre del servidor SQL: ").strip()
         if test_connection(server, "master"):
             return server
-        print("❌ Servidor inválido. Intenta nuevamente.")
+        print("Servidor inválido. Intenta nuevamente.")
 
 
 def ask_for_database(server): #verifica si la base de datos previamente colocada existe dentro del servidor elegido
     while True:
-        database = input("📂 Ingresa el nombre de la base de datos: ").strip()
+        database = input("Ingresa el nombre de la base de datos: ").strip()
         if test_connection(server, database):
             return database
-        print("❌ Base de datos inválida. Intenta nuevamente.")
+        print("Base de datos inválida. Intenta nuevamente.")
 
 
 def ask_for_csv_path(): #verifica si existe una ruta válida para los archivos que se exportan
     while True:
-        path = input("📁 Ingresa la ruta donde guardarás los archivos .csv: ").strip()
+        path = input("Ingresa la ruta donde guardarás los archivos .csv: ").strip()
         path = os.path.normpath(path)
         if os.path.isdir(path):
             return path
-        print("❌ Ruta inválida o no existente. Intenta nuevamente.")
+        print("Ruta inválida o no existente. Intenta nuevamente.")
 
 
 def config_menu(salir): #función principal con el menú de configuración
     config = load_config()
     # Verifica si hay conexión previa
     if config["server"] != "null" and config["database"] != "null":
-        print(f"✅ Archivos serán subidos a la base de datos llamada: **{config['database']}** en el servidor **{config['server']}**")
+        print(f"Archivos serán subidos a la base de datos llamada: **{config['database']}** en el servidor **{config['server']}**")
     else:
-        print("⚠️ No se detectó una configuración válida de base de datos.\n")
+        print("No se detectó una configuración válida de base de datos.\n")
         config["server"] = ask_for_server()
         config["database"] = ask_for_database(config["server"])
 
     # Verifica ruta CSV
     if config["csv_path"] != "null":
-        print(f"📄 Archivos .csv serán guardados en: {config['csv_path']}")
+        print(f"Archivos .csv serán guardados en: {config['csv_path']}")
     else:
-        print("⚠️ No se detectó una ruta válida para guardar archivos CSV.")
+        print("No se detectó una ruta válida para guardar archivos CSV.")
         config["csv_path"] = ask_for_csv_path()
 
     save_config(config)
 
     # Opciones del menú
-    print("""=== 🛠️ MENÚ DE INICIO ===)
+    print("""===MENÚ DE INICIO ===)
 1. Modificar conexión de servidor y base de datos en SQL server
 2. Modificar ruta de guardado de archivos .csv
 3. Presiona "Enter" para continuar sin cambios.""")
@@ -92,11 +92,11 @@ def config_menu(salir): #función principal con el menú de configuración
         config["server"] = ask_for_server()
         config["database"] = ask_for_database(config["server"])
         save_config(config)
-        print("✅ Configuración actualizada.")
+        print("Configuración actualizada.")
 
     elif opcion == "2":
         config["csv_path"] = ask_for_csv_path()
         save_config(config)
-        print("✅ Ruta actualizada.")
+        print("Ruta actualizada.")
 
     return config

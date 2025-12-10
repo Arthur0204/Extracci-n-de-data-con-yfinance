@@ -14,9 +14,9 @@ def asegurar_schema(engine, tipo):
             {'schema': tipo}
         )
         if result.fetchone() is None:
-            print(f"ℹ️ El esquema '{tipo}' no existe en la base de datos, creando...")
+            print(f"El esquema '{tipo}' no existe en la base de datos, creando...")
             connection.execute(text(f"CREATE SCHEMA {tipo}"))
-            print(f"✅ Esquema '{tipo}' creado exitosamente.")
+            print(f"Esquema '{tipo}' creado exitosamente.")
         else:
             print("")  # Esquema ya existe, no se hace nada
 
@@ -45,7 +45,7 @@ def subirSQL(df,nombre,tipo): #función principal (para extraer los parámetros)
         if respuesta == '1':
             try:
                 asegurar_schema(engine, tipo)  # nuevo paso antes de subir
-                print(f"📤 Subiendo la tabla a SQL...")
+                print(f"Subiendo la tabla a SQL...")
                 
                 df.to_sql(nombre,engine,schema=tipo,if_exists='replace',index=True,
                     dtype={
@@ -61,20 +61,20 @@ def subirSQL(df,nombre,tipo): #función principal (para extraer los parámetros)
                     }
                 )
                 
-                print(f"✅ Los datos de {nombre} fueron subidos exitosamente a la base de datos '{database}'.")
+                print(f"Los datos de {nombre} fueron subidos exitosamente a la base de datos '{database}'.")
                 break
             except Exception as e:
-                print(f"❌ Error al subir a SQL: {e}")
+                print(f"Error al subir a SQL: {e}")
         elif respuesta == '2':
             try:
                 nombre_archivo = f"{nombre}.csv"
                 df.to_csv(nombre_archivo, index=False)
-                print(f"✅ Archivo CSV exportado como '{nombre_archivo}' en: {os.getcwd()}")
+                print(f"Archivo CSV exportado como '{nombre_archivo}' en: {os.getcwd()}")
                 break
             except Exception as e:
-                print(f"❌ Error al exportar a CSV: {e}")
+                print(f"Error al exportar a CSV: {e}")
         elif respuesta == '3':
             print("🔙 Operación cancelada. Regresando al menú principal.")
             break
         else:
-            print("⚠️ Entrada inválida. Por favor elige 1, 2 o 3.")
+            print("Entrada inválida. Por favor elige 1, 2 o 3.")

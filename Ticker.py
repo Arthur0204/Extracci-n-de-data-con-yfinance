@@ -30,7 +30,7 @@ def ejecutar_etl(salir): #esta es la función que me permite importar las variab
             
             from ETL_general import ETL #llamar al modulo ETL_general
             df = ETL(Ticker, start, end) #toma los parámetros ingresados y los manda a la función ETL, devuelve un DF
-            print(f"\n✅ {Ticker} → Datos obtenidos para: {Ticker}")
+            print(f"\n {Ticker} → Datos obtenidos para: {Ticker}")
             print(df.head())
             
             from importarSQL import subirSQL
@@ -38,5 +38,5 @@ def ejecutar_etl(salir): #esta es la función que me permite importar las variab
             
             break  # salir tras ejecución exitosa
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"Error: {e}")
             print("Intenta nuevamente...\n")

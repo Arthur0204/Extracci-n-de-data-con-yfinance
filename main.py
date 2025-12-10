@@ -46,8 +46,8 @@ while True:
             time.sleep(2)
             
         except ModuleNotFoundError:
-            print(f"❌ No se encontró el módulo.")
+            print(f"No se encontró el módulo.")
         except AttributeError:
-            print(f"❌ La función no existe en el módulo.")
+            print(f"La función no existe en el módulo.")
     else:
-        print("❌ Opción inválida. Intenta nuevamente.")
+        print("Opción inválida. Intenta nuevamente.")
